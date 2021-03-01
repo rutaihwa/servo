@@ -4,7 +4,6 @@
 
 use winit::event::{ElementState, KeyboardInput, ModifiersState, VirtualKeyCode};
 use keyboard_types::{Code, Key, KeyState, KeyboardEvent, Location, Modifiers};
-use winit::{ElementState, KeyboardInput, ModifiersState, VirtualKeyCode};
 
 // Some shortcuts use Cmd on Mac and Control on other systems.
 #[cfg(target_os = "macos")]

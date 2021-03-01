@@ -4,12 +4,9 @@
 
 //! Implements the global methods required by Servo (not window/gl/compositor related).
 
-use crate::events_loop::EventsLoop;
 use servo::compositing::windowing::EmbedderMethods;
 use servo::embedder_traits::{EmbedderProxy, EventLoopWaker};
 use servo::servo_config::pref;
-use std::cell::RefCell;
-use std::rc::Rc;
 use webxr::glwindow::GlWindowDiscovery;
 
 pub struct EmbedderCallbacks {

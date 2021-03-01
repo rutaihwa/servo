@@ -22,7 +22,6 @@ use std::env;
 use std::mem;
 use std::rc::Rc;
 use webxr::glwindow::GlWindowDiscovery;
-use winit::WindowId;
 
 thread_local! {
     pub static WINDOWS: RefCell<HashMap<WindowId, Rc<dyn WindowPortsMethods>>> = RefCell::new(HashMap::new());

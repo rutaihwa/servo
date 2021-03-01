@@ -11,7 +11,6 @@ use euclid::{
     Angle, Point2D, Rotation3D, Scale, Size2D, UnknownUnit,
     Vector2D, Vector3D,
 };
-use winit::dpi::{PhysicalPosition, PhysicalSize};
 #[cfg(target_os = "macos")]
 use winit::platform::macos::{ActivationPolicy, WindowBuilderExtMacOS};
 #[cfg(any(target_os = "linux", target_os = "windows"))]
@@ -48,14 +47,10 @@ use surfman::GLVersion;
 use surfman::SurfaceType;
 #[cfg(target_os = "windows")]
 use winapi;
-use winit::dpi::{LogicalPosition, LogicalSize, PhysicalSize};
+use winit::dpi::{LogicalPosition, LogicalSize, PhysicalPosition, PhysicalSize};
 #[cfg(target_os = "macos")]
 use winit::os::macos::{ActivationPolicy, WindowBuilderExt};
 #[cfg(any(target_os = "linux", target_os = "windows"))]
-use winit::Icon;
-use winit::{
-    ElementState, KeyboardInput, MouseButton, MouseScrollDelta, TouchPhase, VirtualKeyCode,
-};
 
 #[cfg(target_os = "macos")]
 fn builder_with_platform_options(mut builder: winit::window::WindowBuilder) -> winit::window::WindowBuilder {
@@ -267,9 +262,9 @@ impl Window {
 
         let max_pixel_dist = 10.0 * self.servo_hidpi_factor().get();
         let mouse_button = match &button {
-            winit::MouseButton::Left => MouseButton::Left,
-            winit::MouseButton::Right => MouseButton::Right,
-            winit::MouseButton::Middle => MouseButton::Middle,
+            winit::event::MouseButton::Left => MouseButton::Left,
+            winit::event::MouseButton::Right => MouseButton::Right,
+            winit::event::MouseButton::Middle => MouseButton::Middle,
             _ => MouseButton::Left,
         };
         let event = match action {
