@@ -47,7 +47,7 @@ use surfman::GLVersion;
 use surfman::SurfaceType;
 #[cfg(target_os = "windows")]
 use winapi;
-use winit::dpi::{LogicalPosition, LogicalSize, PhysicalPosition, PhysicalSize};
+use winit::dpi::{PhysicalPosition, PhysicalSize};
 #[cfg(target_os = "macos")]
 use winit::os::macos::{ActivationPolicy, WindowBuilderExt};
 #[cfg(any(target_os = "linux", target_os = "windows"))]

@@ -36,12 +36,12 @@ impl EventsLoop {
         EventsLoop(EventLoop::Winit(Some(winit::event_loop::EventLoop::with_user_event())))
     }
     #[cfg(target_os = "linux")]
-    pub fn new(headless: bool) -> Rc<RefCell<EventsLoop>> {
+    pub fn new(headless: bool) -> EventsLoop {
         EventsLoop(if headless {
             EventLoop::Headless(Arc::new((Mutex::new(false), Condvar::new())))
         } else {
             EventLoop::Winit(Some(winit::event_loop::EventLoop::with_user_event()))
-        });
+        })
     }
 }
 
