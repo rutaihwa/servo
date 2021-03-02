@@ -74,7 +74,7 @@ pub struct Window {
     inner_size: Cell<Size2D<u32, DeviceIndependentPixel>>,
     mouse_down_button: Cell<Option<winit::event::MouseButton>>,
     mouse_down_point: Cell<Point2D<i32, DevicePixel>>,
-    primary_monitor: winit::monitor::MonitorHandle,
+    primary_monitor: Option<winit::monitor::MonitorHandle>,
     event_queue: RefCell<Vec<WindowEvent>>,
     mouse_pos: Cell<Point2D<i32, DevicePixel>>,
     last_pressed: Cell<Option<(KeyboardEvent, Option<VirtualKeyCode>)>>,
@@ -140,7 +140,7 @@ impl Window {
         let PhysicalSize {
             width: screen_width,
             height: screen_height,
-        } = primary_monitor.size();
+        } = primary_monitor.unwrap().size();
         let screen_size = Size2D::new(screen_width as u32, screen_height as u32);
         let PhysicalSize { width, height } = winit_window.inner_size();
         let inner_size = Size2D::new(width as u32, height as u32);
