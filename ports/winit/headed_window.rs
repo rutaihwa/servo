@@ -140,7 +140,7 @@ impl Window {
         let PhysicalSize {
             width: screen_width,
             height: screen_height,
-        } = primary_monitor.unwrap().size();
+        } = primary_monitor.clone().unwrap().size();
         let screen_size = Size2D::new(screen_width as u32, screen_height as u32);
         let PhysicalSize { width, height } = winit_window.inner_size();
         let inner_size = Size2D::new(width as u32, height as u32);
