@@ -47,7 +47,7 @@ use surfman::GLVersion;
 use surfman::SurfaceType;
 #[cfg(target_os = "windows")]
 use winapi;
-use winit::dpi::{PhysicalPosition, PhysicalSize};
+use winit::dpi::{LogicalPosition, PhysicalPosition, PhysicalSize};
 #[cfg(target_os = "macos")]
 use winit::os::macos::{ActivationPolicy, WindowBuilderExt};
 #[cfg(any(target_os = "linux", target_os = "windows"))]
@@ -436,8 +436,8 @@ impl WindowPortsMethods for Window {
                         (dx as f64, (dy * LINE_HEIGHT) as f64, WheelMode::DeltaLine)
                     },
                     MouseScrollDelta::PixelDelta(position) => {
-                        let position: PhysicalPosition<f64> =
-                            position.to_physical(self.device_hidpi_factor().get() as f64);
+                        let position: LogicalPosition<f64> =
+                            position.to_logical(self.device_hidpi_factor().get() as f64);
                         (position.x, position.y, WheelMode::DeltaPixel)
                     },
                 };
