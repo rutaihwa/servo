@@ -5,8 +5,6 @@
 //! An event loop implementation that works in headless mode.
 
 use servo::embedder_traits::EventLoopWaker;
-use std::cell::RefCell;
-use std::rc::Rc;
 use std::sync::{Arc, Condvar, Mutex};
 use std::time;
 use winit;

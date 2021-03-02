@@ -5,7 +5,7 @@
 //! Definition of Window.
 //! Implemented by headless and headed windows.
 
-use crate::events_loop::{EventsLoop, ServoEvent};
+use crate::events_loop::ServoEvent;
 use servo::compositing::windowing::{WindowEvent, WindowMethods};
 use servo::embedder_traits::Cursor;
 use servo::webrender_api::units::{DeviceIntPoint, DeviceIntSize};

@@ -4,7 +4,7 @@
 
 //! A headless window implementation.
 
-use crate::events_loop::{EventsLoop, ServoEvent};
+use crate::events_loop::ServoEvent;
 use crate::window_trait::WindowPortsMethods;
 use euclid::{Point2D, Rotation3D, Scale, Size2D, UnknownUnit, Vector3D};
 use servo::compositing::windowing::{AnimationState, WindowEvent};
