@@ -113,7 +113,7 @@ impl Window {
         // #9996.
         let visible = opts.output_file.is_none() && !no_native_titlebar;
 
-        let win_size: DeviceIntSize = (win_size.to_f32() * window_creation_scale_factor()).to_i32();
+        let win_size/*: DeviceIntSize*/ = (win_size.to_f32() /* * window_creation_scale_factor()*/).to_i32();
         let width = win_size.to_untyped().width;
         let height = win_size.to_untyped().height;
 
@@ -488,6 +488,7 @@ impl WindowPortsMethods for Window {
             winit::event::WindowEvent::Resized(physical_size) => {
                 let (width, height) = physical_size.into();
                 let new_size = Size2D::new(width, height);
+                info!("new window size: {:?}", new_size);
                 if self.inner_size.get() != new_size {
                     let physical_size = Size2D::new(physical_size.width, physical_size.height);
                     self.webrender_surfman
@@ -525,8 +526,9 @@ impl WindowPortsMethods for Window {
 
 impl WindowMethods for Window {
     fn get_coordinates(&self) -> EmbedderCoordinates {
-        // TODO(ajeffrey): can this fail?
-        let dpr = self.device_hidpi_factor();
+        // Needed to convince the type system that winit's physical pixels
+        // are actually device pixels.
+        let dpr: Scale<f32, DeviceIndependentPixel, DevicePixel> = Scale::new(1.0);
         let PhysicalSize { width, height } = self
             .winit_window
             .outer_size();
