@@ -351,7 +351,11 @@ impl WindowPortsMethods for Window {
     fn set_fullscreen(&self, state: bool) {
         if self.fullscreen.get() != state {
             self.winit_window
-                .set_fullscreen(if state { Some(winit::window::Fullscreen::Borderless(self.primary_monitor.clone())) } else { None });
+                .set_fullscreen(
+                    if state {
+                        Some(winit::window::Fullscreen::Borderless(self.primary_monitor.clone()))
+                    } else { None }
+                );
         }
         self.fullscreen.set(state);
     }
@@ -502,7 +506,10 @@ impl WindowPortsMethods for Window {
         }
     }
 
-    fn new_glwindow(&self, event_loop: &winit::event_loop::EventLoopWindowTarget<ServoEvent>) -> Box<dyn webxr::glwindow::GlWindow> {
+    fn new_glwindow(
+        &self,
+        event_loop: &winit::event_loop::EventLoopWindowTarget<ServoEvent>
+    ) -> Box<dyn webxr::glwindow::GlWindow> {
         let size = self.winit_window.outer_size();
 
         let mut window_builder = winit::window::WindowBuilder::new()

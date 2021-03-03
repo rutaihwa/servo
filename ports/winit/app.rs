@@ -71,7 +71,10 @@ impl App {
 
                 let xr_discovery = if pref!(dom.webxr.glwindow.enabled) {
                     let window = window.clone();
-                    let w = unsafe { std::mem::transmute::<&EventLoopWindowTarget<ServoEvent>, &'static EventLoopWindowTarget<ServoEvent>>(w.unwrap()) };
+                    let w = unsafe {
+                        std::mem::transmute::<&EventLoopWindowTarget<ServoEvent>,
+                                              &'static EventLoopWindowTarget<ServoEvent>>(w.unwrap())
+                    };
                     let factory = Box::new(move || Ok(window.new_glwindow(w)));
                     Some(GlWindowDiscovery::new(
                         surfman.connection(),

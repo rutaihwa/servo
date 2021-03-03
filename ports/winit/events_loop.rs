@@ -83,12 +83,18 @@ impl EventsLoop {
         }
     }*/
 
-    pub fn run_forever<F: 'static>(self, mut callback: F) where F: FnMut(winit::event::Event<ServoEvent>, Option<&winit::event_loop::EventLoopWindowTarget<ServoEvent>>, &mut winit::event_loop::ControlFlow) {
+    pub fn run_forever<F: 'static>(self,mut callback: F)
+    where F: FnMut(
+        winit::event::Event<ServoEvent>,
+        Option<&winit::event_loop::EventLoopWindowTarget<ServoEvent>>,
+        &mut winit::event_loop::ControlFlow) {
         match self.0 {
             EventLoop::Winit(events_loop) => {
                 let events_loop = events_loop
                     .expect("Can't run an unavailable event loop.");
-                events_loop.run(move |e, window_target, ref mut control_flow| callback(e, Some(window_target), control_flow));
+                events_loop.run(
+                    move |e, window_target, ref mut control_flow| callback(e, Some(window_target), control_flow)
+                );
             }
             EventLoop::Headless(ref data) => {
                 let &(ref flag, ref condvar) = &**data;
@@ -97,7 +103,11 @@ impl EventsLoop {
                     self.sleep(flag, condvar);
                     let mut control_flow = winit::event_loop::ControlFlow::Poll;
 
-                    callback(winit::event::Event::<ServoEvent>::UserEvent(ServoEvent::Awakened), None, &mut control_flow);
+                    callback(
+                        winit::event::Event::<ServoEvent>::UserEvent(ServoEvent::Awakened),
+                        None,
+                        &mut control_flow
+                    );
                     if control_flow != winit::event_loop::ControlFlow::Poll {
                         *flag.lock().unwrap() = false;
                     } else if control_flow == winit::event_loop::ControlFlow::Exit {

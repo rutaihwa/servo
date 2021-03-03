@@ -102,7 +102,10 @@ impl WindowPortsMethods for Window {
         // Not expecting any winit events.
     }
 
-    fn new_glwindow(&self, _events_loop: &winit::event_loop::EventLoopWindowTarget<ServoEvent>) -> Box<dyn webxr::glwindow::GlWindow> {
+    fn new_glwindow(
+        &self,
+        _events_loop: &winit::event_loop::EventLoopWindowTarget<ServoEvent>
+    ) -> Box<dyn webxr::glwindow::GlWindow> {
         unimplemented!()
     }
 }
