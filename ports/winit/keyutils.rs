@@ -250,7 +250,7 @@ fn get_modifiers(mods: ModifiersState) -> Modifiers {
     modifiers
 }
 
-pub fn keyboard_event_from_winit(input: KeyboardInput) -> KeyboardEvent {
+pub fn keyboard_event_from_winit(input: KeyboardInput, state: ModifiersState) -> KeyboardEvent {
     info!("winit keyboard input: {:?}", input);
     KeyboardEvent {
         state: match input.state {
@@ -260,7 +260,7 @@ pub fn keyboard_event_from_winit(input: KeyboardInput) -> KeyboardEvent {
         key: get_servo_key_from_winit_key(input.virtual_keycode),
         code: get_servo_code_from_scancode(input.scancode),
         location: get_servo_location_from_winit_key(input.virtual_keycode),
-        modifiers: get_modifiers(input.modifiers),
+        modifiers: get_modifiers(state),
         repeat: false,
         is_composing: false,
     }

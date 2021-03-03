@@ -48,9 +48,7 @@ use surfman::SurfaceType;
 #[cfg(target_os = "windows")]
 use winapi;
 use winit::dpi::{LogicalPosition, PhysicalPosition, PhysicalSize};
-#[cfg(target_os = "macos")]
-use winit::os::macos::{ActivationPolicy, WindowBuilderExt};
-#[cfg(any(target_os = "linux", target_os = "windows"))]
+use winit::event::ModifiersState;
 
 #[cfg(target_os = "macos")]
 fn builder_with_platform_options(mut builder: winit::window::WindowBuilder) -> winit::window::WindowBuilder {
@@ -85,6 +83,7 @@ pub struct Window {
     fullscreen: Cell<bool>,
     device_pixels_per_px: Option<f32>,
     xr_window_poses: RefCell<Vec<Rc<XRWindowPose>>>,
+    modifiers_state: Cell<ModifiersState>,
 }
 
 #[cfg(not(target_os = "windows"))]
@@ -175,6 +174,7 @@ impl Window {
             screen_size,
             device_pixels_per_px,
             xr_window_poses: RefCell::new(vec![]),
+            modifiers_state: Cell::new(ModifiersState::empty()),
         }
     }
 
@@ -223,7 +223,7 @@ impl Window {
     }
 
     fn handle_keyboard_input(&self, input: KeyboardInput) {
-        let mut event = keyboard_event_from_winit(input);
+        let mut event = keyboard_event_from_winit(input, self.modifiers_state.get());
         trace!("handling {:?}", event);
         if event.state == KeyState::Down && event.key == Key::Unidentified {
             // If pressed and probably printable, we expect a ReceivedCharacter event.
@@ -243,7 +243,7 @@ impl Window {
             self.last_pressed.set(None);
             let xr_poses = self.xr_window_poses.borrow();
             for xr_window_pose in &*xr_poses {
-                xr_window_pose.handle_xr_rotation(&input);
+                xr_window_pose.handle_xr_rotation(&input, self.modifiers_state.get());
             }
             self.event_queue
                 .borrow_mut()
@@ -415,6 +415,7 @@ impl WindowPortsMethods for Window {
         match event {
             winit::event::WindowEvent::ReceivedCharacter(ch) => self.handle_received_character(ch),
             winit::event::WindowEvent::KeyboardInput { input, .. } => self.handle_keyboard_input(input),
+            winit::event::WindowEvent::ModifiersChanged(state) => self.modifiers_state.set(state),
             winit::event::WindowEvent::MouseInput { state, button, .. } => {
                 if button == MouseButton::Left || button == MouseButton::Right {
                     self.handle_mouse(button, state, self.mouse_pos.get());
@@ -737,7 +738,7 @@ impl XRWindowPose {
         self.xr_translation.set(vec);
     }
 
-    fn handle_xr_rotation(&self, input: &KeyboardInput) {
+    fn handle_xr_rotation(&self, input: &KeyboardInput, modifiers: ModifiersState) {
         if input.state != winit::event::ElementState::Pressed {
             return;
         }
@@ -750,7 +751,7 @@ impl XRWindowPose {
             Some(VirtualKeyCode::Right) => y = -1.0,
             _ => return,
         };
-        if input.modifiers.shift() {
+        if modifiers.shift() {
             x = 10.0 * x;
             y = 10.0 * y;
         }
