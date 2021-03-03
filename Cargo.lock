@@ -6176,6 +6176,7 @@ dependencies = [
 [[package]]
 name = "surfman"
 version = "0.3.1"
+source = "git+https://github.com/pecastro/surfman?branch=winit_0.24#cc68aa531371420d50cfa4bc58a461b9037e891e"
 dependencies = [
  "bitflags",
  "cfg_aliases",
